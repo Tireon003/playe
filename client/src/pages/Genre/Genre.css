@@ -1,0 +1,38 @@
+.items {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+h2 {
+    margin-bottom: 40px;
+}
+
+p {
+    font-size: 20px;
+}
+
+.video {
+    display: flex;
+    justify-content: space-between;
+}
+
+.property {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.react-player {
+    margin: 300px;
+}
+
+.notActive {
+    width: 100%;
+    height: 30%;
+    font-size: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
