@@ -1,0 +1,39 @@
+services:
+  postgres_db:
+    image: postgres:16.4
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+    ports:
+      - "5435:5432"
+    restart: always
+    env_file: server/.env
+    volumes:
+      - ./postgres_db:/var/lib/postgresql/data
+
+  playe_server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    ports:
+      - "8080:8000"
+    depends_on:
+      - postgres_db
+    restart: always
+    volumes:
+      - server_volume:/server_volume
+
+  playe_client:
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+    ports:
+      - "5173:5173"
+    restart: always
+    depends_on:
+      - playe_server
+
+volumes:
+  postgres_db:
+  server_volume:

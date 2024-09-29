@@ -1,18 +1,31 @@
 import { useNavigate } from "react-router-dom";
-import { array } from "./config/Genres";
+import { useState, useEffect } from 'react';
 import { Card } from "antd";
 import "./Main.css";
+import axios from 'axios';
+
 export const Main = () => {
   const navigate = useNavigate();
+
+  const [genres, setGenres] = useState([]);
+
+  const getGenres = async () => {
+    const response = await axios.get(
+        "http://localhost:8080/api/genres/"
+    )
+    setGenres(response.data)
+  }
+
+  useEffect(() => {getGenres()}, []);
 
   return (
     <div>
       <h2 className="title">Выберите категорию</h2>
       <div className="content">
-        {array.map((item) => (
+        {genres.map((item) => (
           <Card
             onClick={() => navigate("/genre")}
-            title={item.name}
+            title={item.genre_name}
             hoverable
             style={{
               width: 300,
