@@ -7,7 +7,7 @@ from repositories import GenreRepository
 from schemas import GenreFromDB
 
 router = APIRouter(
-    prefix="/genres",
+    prefix="/api/genres",
     tags=["genres"],
 )
 
