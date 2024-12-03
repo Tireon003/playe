@@ -3,6 +3,9 @@ import { useState, useEffect } from 'react';
 import { Card } from "antd";
 import "./Main.css";
 import axios from 'axios';
+import { CardInterface } from "../../types/Card";
+
+
 
 export const Main = () => {
   const navigate = useNavigate();
@@ -11,20 +14,20 @@ export const Main = () => {
 
   const getGenres = async () => {
     const response = await axios.get(
-        "http://localhost:8080/api/genres/"
+      "http://localhost:8080/api/genres/"
     )
     setGenres(response.data)
   }
 
-  useEffect(() => {getGenres()}, []);
+  useEffect(() => { getGenres() }, []);
 
   return (
     <div>
-      <h2 className="title">Выберите категорию</h2>
+      <h2 className="title">Выберите категорию </h2>
       <div className="content">
-        {genres.map((item) => (
+        {genres.map((item: CardInterface) => (
           <Card
-            onClick={() => navigate("/genre")}
+            onClick={() => { navigate(`genre/${item.id}`) }}
             title={item.genre_name}
             hoverable
             style={{
