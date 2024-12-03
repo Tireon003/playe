@@ -12,6 +12,8 @@ from routes import (
 origins = [
     "http://localhost:5173",
     "http://127.0.0.0:5173",
+    "http://localhost:5174",
+    "http://127.0.0.0:5174",
 ]
 
 app = FastAPI()
@@ -28,9 +30,4 @@ app.include_router(video_router)
 
 
 if __name__ == "__main__":
-    uvicorn.run(
-        app="main:app",
-        host="0.0.0.0",
-        port=8000,
-        reload=True
-    )
+    uvicorn.run(app="main:app", host="0.0.0.0", port=8000, reload=True)
