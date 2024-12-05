@@ -8,6 +8,8 @@ class Settings(BaseSettings):
     DB_HOST: str
     DB_PORT: int
 
+    TOKEN_SECRET: str
+
     @property
     def db_url(self):
         return (f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}"

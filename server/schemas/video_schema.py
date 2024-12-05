@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from typing_extensions import TYPE_CHECKING
 
 from .genre_schema import GenreFromDB
 
