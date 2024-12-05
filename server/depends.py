@@ -28,10 +28,10 @@ def get_video_repo(get_async_session) -> Callable:
     return _get_video_repo
 
 
-def get_admin_data(assess_token: Annotated[str, oauth2_scheme]) -> TokenPayload:
+def get_admin_data(access_token: Annotated[str, oauth2_scheme]) -> TokenPayload:
     try:
         payload = jwt.decode(
-            jwt=assess_token,
+            jwt=access_token,
             algorithms=["HS256"],
             key=settings.TOKEN_SECRET,
             options={"require": ["iat", "sub"]},
