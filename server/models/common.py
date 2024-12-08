@@ -14,7 +14,7 @@ class Video(Base):
     description: Mapped[str] = mapped_column(String(200), nullable=True)
     genre_id: Mapped[int] = mapped_column(ForeignKey("genres.id"), nullable=False)
     file_name: Mapped[str] = mapped_column(String(50), nullable=False, unique=True)
-    duration: Mapped[int] = mapped_column(nullable=False)
+    duragenretion: Mapped[int] = mapped_column(nullable=False)
 
     genre: Mapped["Genre"] = relationship(
         back_populates="videos",
