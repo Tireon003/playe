@@ -7,6 +7,7 @@ from fastapi import (
 from routes import (
     genre_router,
     video_router,
+    auth_router,
 )
 
 origins = [
@@ -22,11 +23,12 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["GET"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 app.include_router(genre_router)
 app.include_router(video_router)
+app.include_router(auth_router)
 
 
 if __name__ == "__main__":
