@@ -1,8 +1,6 @@
 FROM python:3.12
 
-WORKDIR /app/content
-
-COPY content .
+RUN mkdir -p /app/content
 
 WORKDIR /app/server
 

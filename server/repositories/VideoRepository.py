@@ -15,7 +15,7 @@ class VideoRepository:
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
-    async def select_videos_by_genre(self, genre_id: int) -> list[Video] | None:
+    async def select_videos_by_genre(self, genre_id: int) -> list[Video]:
         stmt = (
             select(Video)
             .options(joinedload(Video.genre))
@@ -25,12 +25,18 @@ class VideoRepository:
         videos = [video for video in result.all()]
         return videos
 
+    async def select_videos_all(self) -> list[Video]:
+        stmt = select(Video).options(joinedload(Video.genre))
+        result = await self.session.scalars(stmt)
+        return [video for video in result.all()]
+
     async def create_video(
-            self,
-            video_file: UploadFile,
-            title: str,
-            description: str,
-            genre_id: int
+        self,
+        video_file: UploadFile,
+        preview_image: UploadFile | None,
+        title: str,
+        description: str,
+        genre_id: int,
     ) -> Video:
 
         genre = await self.session.get(Genre, genre_id)
@@ -41,11 +47,11 @@ class VideoRepository:
             )
 
         file_name = f"{uuid.uuid4()}.mp4"
-        genre_path = f"content/{genre_id}"
+        genre_path = f"/app/content/{genre_id}"
 
-        os.makedirs(genre_path, exist_ok=True)
+        # os.makedirs(genre_path, exist_ok=True)
 
-        new_file_path = f"/{genre_path}/{video_file.filename}"
+        new_file_path = f"{genre_path}/{file_name}"
         with open(new_file_path, "wb") as buffer:
             content = await video_file.read()
             buffer.write(content)
@@ -61,12 +67,15 @@ class VideoRepository:
             duration=duration_minutes,
         )
 
+        if preview_image:
+            new_video.preview_img = await preview_image.read()
+
         self.session.add(new_video)
         await self.session.flush()
         await self.session.refresh(new_video)
         await self.session.commit()
 
-        return file_name
+        return new_video
 
     async def delete_video(self, video_id: int) -> None:
         video = await self.session.get(Video, video_id)
@@ -77,3 +86,8 @@ class VideoRepository:
             )
         await self.session.delete(video)
         return None
+
+    async def select_videos_by_keywords(self, text: str) -> list[Video]:
+        stmt = select(Video).where(Video.title.ilike(f"%{text.strip()}%"))
+        result = await self.session.scalars(stmt)
+        return [video for video in result.all()]
